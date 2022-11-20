@@ -32,10 +32,13 @@ use Illuminate\Support\Facades\Route;
 //     });
 
 
-
-
 // Versi sendiri Laravel 8
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::group(['middleware' => ['auth', 'verified']], function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+});
+
 Route::get('/detail', [DetailController::class, 'index'])->name('detail');
 Route::get('/checkout', [CheckoutContoroller::class, 'index'])->name('checkout');
 Route::get('/checkout/success', [CheckoutContoroller::class, 'success'])->name('checkout-success');
@@ -46,4 +49,4 @@ Route::prefix('admin')->group(function() {
 
 
 // ini merah, karena gw pake laravel/ui dan ui vue-nya si laravel, ngga tau kenapa merah, tapi masih bisa jalan. bingung gw 
-Auth::routes();
+Auth::routes(['verify' => true]);
