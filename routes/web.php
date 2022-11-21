@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\TravelPackageController;
 use App\Http\Controllers\CheckoutContoroller;
 use App\Http\Controllers\DetailController;
 use App\Http\Controllers\HomeController;
@@ -33,8 +34,8 @@ use Illuminate\Support\Facades\Route;
 
 
 // Versi sendiri Laravel 8
-// Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// kasih group middileware, buat route yang harus login dan terverifikasi emailnya
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 });
@@ -44,7 +45,11 @@ Route::get('/checkout', [CheckoutContoroller::class, 'index'])->name('checkout')
 Route::get('/checkout/success', [CheckoutContoroller::class, 'success'])->name('checkout-success');
 
 Route::prefix('admin')->group(function() {
-    Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'admin']);
+    Route::get('/', [DashboardController::class, 'index'])
+        ->middleware(['auth', 'admin'])
+        ->name('dashboard');
+        
+    Route::resource('travel-package', TravelPackageController::class);
 });
 
 
