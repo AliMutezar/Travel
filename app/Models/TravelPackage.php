@@ -17,4 +17,10 @@ class TravelPackage extends Model
     protected $hidden = [
 
     ];
+
+    public function galleries()
+    {
+        // menginformasikan, bahwa travel package ini punya banyak image gallery, (... , foreign key, local key)
+        return $this->hasMany(Gallery::class, 'travel_packages_id', 'id'); 
+    }
 }
