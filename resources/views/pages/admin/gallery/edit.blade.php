@@ -6,107 +6,54 @@
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Edit Paket Travel {{ $item->title }}</h1>
+            <h1 class="h3 mb-0 text-gray-800">Edit Gallery</h1>
         </div>
+
 
         <div class="card shadow">
             <div class="card-body">
-                <form action="{{ route('gallery.update', $item->id) }}" method="POST">
-                    @csrf
+                <form action="{{ route('gallery.update', $galleries->id) }}" method="POST" enctype="multipart/form-data">
                     @method('PUT')
-
+                    @csrf
+                    
                     <div class="form-group">
-                        <label for="title">Title</label>
-                        <input type="text" class="form-control @error ('title') is-invalid @enderror" name="title" placeholder="Title" value="{{ $item->title }}">
+                        <label for="travel_packages_id">Paket Travel</label>
+                        <select name="travel_packages_id" class="form-control @error ('travel_packages_id') is-invalid @enderror">
+                            @foreach ($travel_packages as $travel_package)
 
-                        @error('title')
+                                @if (old('travel_packages_id', $galleries->travel_packages_id) == $travel_package->id)
+                                    <option value="{{ $travel_package->id }}" selected> {{ $travel_package->title }} </option>
+                                @else
+                                    <option value="{{ $travel_package->id }}"> {{ $travel_package->title }} </option>
+                                @endif
+                            @endforeach
+                        </select>
+
+                        @error('travel_packages_id')
                             <div class="alert alert-danger mt-2">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="form-group">
-                        <label for="location">Location</label>
-                        <input type="text" class="form-control @error ('location') is-invalid @enderror" name="location" placeholder="location" value="{{ $item->location }}">
+                        <label for="image" class="form-label">Image</label>
+                        <input type="hidden" name="oldImage" value="{{ $galleries->image }}">
 
-                        @error('location')
-                            <div class="alert alert-danger mt-2">{{ $message }}</div>
-                        @enderror
-                    </div>
+                        <input class="form-control @error('image') is-invalid @enderror" type="file" id="image" name="image" onchange="previewImage()">
 
-                    <div class="form-group">
-                        <label for="about">About</label>
-                        <textarea class="form-control @error ('about') is-invalid @enderror" name="about" rows="3">{{ $item->about }}</textarea>
-
-                        @error('about')
-                            <div class="alert alert-danger mt-2">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label for="featured_event">Featured Event</label>
-                        <input type="text" class="form-control @error ('featured_event') is-invalid @enderror" name="featured_event" placeholder="Featured Event" value="{{ $item->featured_event }}">
-
-                        @error('featured_event')
-                            <div class="alert alert-danger mt-2">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label for="language">Language</label>
-                        <input type="text" class="form-control @error ('language') is-invalid @enderror" name="language" placeholder="Language" value="{{ $item->language }}">
-
-                        @error('language')
-                            <div class="alert alert-danger mt-2">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label for="foods">Foods</label>
-                        <input type="text" class="form-control @error ('foods') is-invalid @enderror" name="foods" placeholder="Foods" value="{{ $item->foods }}">
-
-                        @error('foods')
-                            <div class="alert alert-danger mt-2">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label for="departure_date">Depature Date</label>
-                        <input type="date" class="form-control @error ('departure_date') is-invalid @enderror" name="departure_date" placeholder="Departure Date" value="{{ $item->departure_date }}">
-
-                        @error('departure_date')
-                            <div class="alert alert-danger mt-2">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label for="duration">Duration</label>
-                        <input type="text" class="form-control @error ('duration') is-invalid @enderror" name="duration" placeholder="Duration" value="{{ $item->duration }}">
-
-                        @error('duration')
-                            <div class="alert alert-danger mt-2">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label for="type">Type</label>
-                        <input type="text" class="form-control @error ('type') is-invalid @enderror" name="type" placeholder="Type" value="{{ $item->type }}">
-
-                        @error('type')
-                            <div class="alert alert-danger mt-2">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label for="price">Price</label>
-                        <input type="number" class="form-control @error ('price') is-invalid @enderror" name="price" placeholder="Price" value="{{ $item->price }}">
-
-                        @error('price')
+                        @if ($galleries->image)
+                            <img src="{{ asset('storage/' . $galleries->image) }}" style="max-height: 100px;" class="img-preview mt-2" />
+                        @else
+                            <img class="img-preview img-fluid mb-3 col-sm-4">
+                        @endif
+                        
+                     
+                        @error('image')
                             <div class="alert alert-danger mt-2">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <button class="btn btn-primary btn-block" type="submit">
-                        Simpan Perubahan
+                        Ubah Data
                     </button>
                 </form>
             </div>

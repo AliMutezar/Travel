@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\GalleryRequest;
 use App\Models\Gallery;
-use Illuminate\Support\Str;
+use App\Models\TravelPackage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class GalleryController extends Controller
 {
@@ -33,7 +34,10 @@ class GalleryController extends Controller
      */
     public function create()
     {
-        //
+        $travel_packages = TravelPackage::all();
+        return view('pages.admin.gallery.create', [
+            'travel_packages'   =>  $travel_packages
+        ]);
     }
 
     /**
@@ -42,9 +46,15 @@ class GalleryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(GalleryRequest $request)
     {
-        //
+        // return $request->file('image')->store('gallery-image');
+
+        $data = $request->all();
+        $data['image']  =   $request->file('image')->store('gallery-image');
+
+        Gallery::create($data);
+        return redirect()->route('gallery.index');
     }
 
     /**
@@ -66,7 +76,12 @@ class GalleryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $galleries = Gallery::findOrFail($id);
+        $travel_packages = TravelPackage::all();
+        return view('pages.admin.gallery.edit', [
+            'galleries'  => $galleries,
+            'travel_packages' => $travel_packages
+        ]);
     }
 
     /**
@@ -76,9 +91,23 @@ class GalleryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(GalleryRequest $request, $id)
     {
-        //
+        $data = $request->all();
+
+        // check gambar apakah ada gambar baru / tidak
+        if($request->image) {
+            if($request->oldImage) {
+                Storage::delete($request->oldImage);
+            }
+
+            $data['image'] = $request->file('image')->store('gallery-image');
+        }
+
+        $item = Gallery::findOrFail($id);
+        $item->update($data);
+
+        return redirect()->route('gallery.index')->with('success', 'Gallery has been updated');
     }
 
     /**
@@ -89,6 +118,9 @@ class GalleryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $item = Gallery::findOrFail($id);
+        $item->delete();
+
+        return redirect()->route('gallery.index');
     }
 }

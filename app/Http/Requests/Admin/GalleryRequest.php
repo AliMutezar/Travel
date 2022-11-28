@@ -27,7 +27,7 @@ class GalleryRequest extends FormRequest
 
             //exists data id travel_packages_id ada di table travel packages 
             'travel_packages_id'    =>  'required|integer|exists:travel_packages,id',
-            'image' =>  'required|image'
+            'image' =>  'image'
         ];
     }
 }
