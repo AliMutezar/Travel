@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\TravelPackageController;
 use App\Http\Controllers\CheckoutContoroller;
 use App\Http\Controllers\DetailController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,6 +53,7 @@ Route::prefix('admin')->group(function() {
         
     Route::resource('travel-package', TravelPackageController::class);
     Route::resource('gallery', GalleryController::class);
+    Route::resource('transaction', TransactionController::class);
 });
 
 
