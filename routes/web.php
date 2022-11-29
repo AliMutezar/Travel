@@ -47,6 +47,7 @@ Route::get('/checkout', [CheckoutContoroller::class, 'index'])->name('checkout')
 Route::get('/checkout/success', [CheckoutContoroller::class, 'success'])->name('checkout-success');
 
 Route::prefix('admin')->group(function() {
+    
     Route::get('/', [DashboardController::class, 'index'])
         ->middleware(['auth', 'admin'])
         ->name('dashboard');
@@ -54,6 +55,8 @@ Route::prefix('admin')->group(function() {
     Route::resource('travel-package', TravelPackageController::class);
     Route::resource('gallery', GalleryController::class);
     Route::resource('transaction', TransactionController::class);
+
+
 });
 
 
