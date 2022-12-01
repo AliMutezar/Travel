@@ -13,7 +13,7 @@ class DashboardController extends Controller
     {
         return view('pages.admin.dashboard', [
             'travel_package'        => TravelPackage::count(),
-            'transaction'           => Transaction::sum('transaction_total'),
+            'transaction'           => Transaction::where('transaction_status', 'SUCCESS')->sum('transaction_total'),
             'transaction_pending'   => Transaction::where('transaction_status', 'PENDING')->count(),  
             'transaction_success'   => Transaction::where('transaction_status', 'SUCCESS')->count(),  
         ]);
