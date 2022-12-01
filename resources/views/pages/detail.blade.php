@@ -24,64 +24,53 @@
             <div class="row">
                 <div class="col-lg-8 pl-lg-0">
                     <div class="card card-details">
-                        <h1>Nusa Penida</h1>
-                        <p>Republic of Indonesia Raya</p>
+                        <h1>{{ $item->title }}</h1>
+                        <p>{{ $item->location }}</p>
 
-                        <div class="gallery">
-                            <div class="xzoom-container">
-                                <img src="frontend/images/nusapenida/nusapenida-1.jpg" alt="nusapenida" class="xzoom" id="xzoom-default" xoriginal="frontend/images/nusapenida/nusapenida-1.jpg">
+                        @if ($item->galleries->count())
+
+                            <div class="gallery">
+                                <div class="xzoom-container">
+                                    <img src="{{ Storage::url($item->galleries->first()->image) }}" alt="nusapenida" class="xzoom" id="xzoom-default" xoriginal="{{ Storage::url($item->galleries->first()->image) }}">
+                                </div>
+
+                                <div class="xzoom-thumbs d-flex justify-content-md-between">
+                                    @foreach ($item->galleries as $gallery)
+                                        <a href="{{ Storage::url($gallery->image) }}">
+                                            <img src="{{ Storage::url($gallery->image) }}" alt=""  class="xzoom-gallery img-fluid" xpreview="{{ Storage::url($gallery->image) }}">
+                                        </a>
+                                    @endforeach
+                                </div>
                             </div>
-
-                            <div class="xzoom-thumbs d-flex justify-content-md-between">
-                                <a href="frontend/images/nusapenida/nusapenida-2.jpg">
-                                    <img src="frontend/images/nusapenida/nusapenida-2.jpg" alt=""  class="xzoom-gallery img-fluid" xpreview="frontend/images/nusapenida/nusapenida-2.jpg">
-                                </a>
-
-                                <a href="frontend/images/nusapenida/nusapenida-3.jpg">
-                                    <img src="frontend/images/nusapenida/nusapenida-3.jpg" alt=""  class="xzoom-gallery img-fluid" xpreview="frontend/images/nusapenida/nusapenida-3.jpg">
-                                </a>
-
-                                <a href="frontend/images/nusapenida/nusapenida-4.jpg">
-                                    <img src="frontend/images/nusapenida/nusapenida-4.jpg" alt=""  class="xzoom-gallery img-fluid" xpreview="frontend/images/nusapenida/nusapenida-4.jpg">
-                                </a>
-
-                                <a href="frontend/images/nusapenida/nusapenida-5.jpg">
-                                    <img src="frontend/images/nusapenida/nusapenida-5.jpg" alt=""  class="xzoom-gallery img-fluid" xpreview="frontend/images/nusapenida/nusapenida-5.jpg">
-                                </a>
-
-                                <a href="frontend/images/nusapenida/nusapenida-6.jpg">
-                                    <img src="frontend/images/nusapenida/nusapenida-6.jpg" alt=""  class="xzoom-gallery img-fluid" xpreview="frontend/images/nusapenida/nusapenida-6.jpg">
-                                </a>
-                            </div>
-                        </div>
+                        
+                            
+                        @endif
 
                         <h2 class="mt-3">Tentang Wisata</h2>
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officia ullam atque nostrum cum repellendus porro cupiditate maiores perferendis maxime libero nobis esse, repudiandae ad accusamus nihil in blanditiis, provident et sit inventore deleniti! Voluptatum excepturi assumenda quia atque deleniti vero voluptatem at alias animi quis.</p>
-
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, consequatur odio aspernatur tempora porro minus repellendus quasi id ducimus ut?</p>
+                        <p>{{ $item->about }}</p>
 
                         <div class="features row">
                             <div class="col-md-4">
-                                <img src="frontend/icons/ticket.png" alt="icons" class="features-image">
+                                <img src="{{ url('frontend/icons/ticket.png') }}" alt="icons" class="features-image">
                                 <div class="description">
                                     <h3>Featured Event</h3>
-                                    <p>Tari Kecak</p>
+                                    <p>{{ $item->featured_event }}</p>
                                 </div>
                             </div>
 
                             <div class="col-md-4 border-left my-3 my-md-0">
-                                <img src="frontend/icons/language.png" alt="icons" class="features-image">
+                                <img src="{{ url('frontend/icons/language.png') }}" alt="icons" class="features-image">
                                 <div class="description">
                                     <h3>Language</h3>
-                                    <p>Bahasa Indonesia</p>
+                                    <p>{{ $item->language }}</p>
                                 </div>
                             </div>
 
                             <div class="col-md-4 border-left">
-                                <img src="frontend/icons/burger.png" alt="icons" class="features-image">
+                                <img src="{{ url('frontend/icons/burger.png') }}" alt="icons" class="features-image">
                                 <div class="description">
                                     <h3>Foods</h3>
-                                    <p>Local Foods</p>
+                                    <p>{{ $item->foods }}</p>
                                 </div>
                             </div>
                         </div>
@@ -103,34 +92,47 @@
                             <tr>
                                 <th width="50%">Date of Departure</th>
                                 <td width="50%" class="text-right">
-                                    22 Agustus 2019
+                                    {{ \Carbon\Carbon::create($item->date_of_departure)->format('F n, Y') }}
                                 </td>
                             </tr>
                             <tr>
                                 <th width="50%">Duration</th>
                                 <td width="50%" class="text-right">
-                                    4d 3N
+                                    {{ $item->duration }}
                                 </td>
                             </tr>
                             <tr>
                                 <th width="50%">Type</th>
                                 <td width="50%" class="text-right">
-                                    Open Trip
+                                    {{ $item->type }}
                                 </td>
                             </tr>
                             <tr>
                                 <th width="50%">Price</th>
                                 <td width="50%" class="text-right">
-                                    $80,00 / person 
+                                    Rp {{ $item->price }} / person 
                                 </td>
                             </tr>
                         </table>
                     </div>
 
                     <div class="join-container">
-                        <a href="{{ route('checkout') }}" class="btn btn-block btn-join-now mt-3 py-2">
-                            Join Now
-                        </a>
+
+                        @auth
+                            <form action="{{ route('checkout-process', $item->id) }}" method="POST">
+                                @csrf
+                                <button class="btn-block btn btn-join-now mt-3 py-2" type="submit">
+                                    Join Now
+                                </button>
+                            </form>
+                        @endauth
+
+                        @guest
+                            <a href="{{ route('login') }}" class="btn btn-block btn-join-now mt-3 py-2">
+                                Login or Register to Join Trip
+                            </a>
+                        @endguest
+                       
                     </div>
                 </div>
             </div>

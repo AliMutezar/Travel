@@ -35,17 +35,32 @@ use Illuminate\Support\Facades\Route;
 //     });
 
 
+
 // Versi sendiri Laravel 8
 
 // kasih group middileware, buat route yang harus login dan terverifikasi emailnya
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::get('/', [HomeController::class, 'index'])->name('home');
+
+    // untuk memproses data dari checkout, ketika klik join now. untuk data ini masuk ke checkout index dan user mendapatkan id transaction
+    Route::post('/checkout/{id}', [CheckoutContoroller::class, 'process'])->name('checkout-process');
+
+    // id transaction, get untuk mengambil data id
+    Route::get('/checkout/{id}', [CheckoutContoroller::class, 'index'])->name('checkout');
+
+    // menambahkan orang di detail checkout
+    Route::post('/checkout/create/{detail_id}', [CheckoutContoroller::class, 'create'])->name('checkout-create');
+
+    // menghapus orang di detail checkout
+    Route::get('/checkout/remove/{detail_id}', [CheckoutContoroller::class, 'remove'])->name('checkout-remove');
+
+    // mengganti status menjadi sukses
+    Route::get('/checkout/confirm/{id}', [CheckoutContoroller::class, 'success'])->name('checkout-success');
 });
 
-Route::get('/detail', [DetailController::class, 'index'])->name('detail');
-Route::get('/checkout', [CheckoutContoroller::class, 'index'])->name('checkout');
-Route::get('/checkout/success', [CheckoutContoroller::class, 'success'])->name('checkout-success');
 
+Route::get('/detail/{slug}', [DetailController::class, 'index'])->name('detail');
 Route::prefix('admin')->group(function() {
     
     Route::get('/', [DashboardController::class, 'index'])
@@ -55,8 +70,6 @@ Route::prefix('admin')->group(function() {
     Route::resource('travel-package', TravelPackageController::class);
     Route::resource('gallery', GalleryController::class);
     Route::resource('transaction', TransactionController::class);
-
-
 });
 
 

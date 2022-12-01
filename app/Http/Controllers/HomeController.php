@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TravelPackage;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -14,6 +15,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('pages.home');
+
+        // panggil relasi dari travel package ke galleries untuk mengambil gambar
+        $items = TravelPackage::with(['galleries'])->get();
+        return view('pages.home', [
+            'items' =>  $items
+        ]);
     }
 }
