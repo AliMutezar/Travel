@@ -32,6 +32,14 @@
                             <h1>Who is going ?</h1>
                             <p>Trip to {{ $item->travel_package->title }}, </p>{{ $item->travel_package->location }}
 
+                            @if (session()->has('failed'))
+                                <div class="alert alert-success alert-dismissible fade show col-lg-10" role="alert"> 
+                                    <i class="menu-icon mdi mdi-check-circle"></i>
+                                    <strong>{{ session('failed') }}</strong> Thank you for your contribution
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+
                             <div class="attendee">
                                 <table class="table table-responsive-sm text-center">
                                     <thead>
@@ -58,7 +66,7 @@
                                                     {{ \Carbon\Carbon::createFromDate($detail->doe_passport) > \Carbon\Carbon::now() ? 'Active' : 'Inactive' }}
                                                 </td>
                                                 <td class="align-middle">
-                                                    <a href="{{ route('checkout-remove', $detail->id) }}" role="button">
+                                                    <a href="{{ route('checkout-remove', $detail->id) }}" role="button" onclick="return confirm('Want to remove this person from your trip ?')">
                                                         <img src="{{ url('frontend/icons/x.png') }}" style="width: 15px;" alt="">
                                                     </a>
                                                 </td>
