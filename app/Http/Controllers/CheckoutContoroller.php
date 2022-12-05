@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TransactionSuccess;
+
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use App\Models\TravelPackage;
@@ -102,9 +105,22 @@ class CheckoutContoroller extends Controller
 
     public function success(Request $request, $id)
     {
-        $transaction = Transaction::findOrFail($id);
+
+        $transaction = Transaction::with(['details', 'travel_package.galleries', 'user'])->findOrFail($id);
         $transaction->transaction_status = 'PENDING';
         $transaction->save();
+
+        // untuk debug data transaction email
+        // return $transaction;
+
+        // Kirim E-Ticket ke email user
+        Mail::to($transaction->user)->send(
+
+            // call method (buil) in TransactionSuccess mail
+            // $transaction akan menjadi variable $data sebagai paramater di construct-nya TransactionSuccess
+            new TransactionSuccess($transaction)
+        );
+
 
         return view('pages.success');
     }
