@@ -7,6 +7,7 @@ use App\Http\Controllers\CheckoutContoroller;
 use App\Http\Controllers\DetailController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\MidtransController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -75,3 +76,13 @@ Route::prefix('admin')->group(function() {
 
 // ini merah, karena gw pake laravel/ui dan ui vue-nya si laravel, ngga tau kenapa merah, tapi masih bisa jalan. bingung gw 
 Auth::routes(['verify' => true]);
+
+
+
+// Midtrans endpoint
+
+// notification handler
+Route::post('/midtrans/callback', [MidtransController::class, 'notificationHandler']);
+Route::get('/midtrans/finish', [MidtransController::class, 'finishRedirect']);
+Route::get('/midtrans/unfinish', [MidtransController::class, 'unfinishRedirect']);
+Route::get('/midtrans/error', [MidtransController::class, 'errorRedirect']);

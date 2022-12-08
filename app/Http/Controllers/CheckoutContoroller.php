@@ -11,6 +11,10 @@ use App\Models\TravelPackage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Exception;
+use Midtrans\Config;
+use Midtrans\Snap;
+use PhpParser\Node\Stmt\TryCatch;
 
 class CheckoutContoroller extends Controller
 {
@@ -110,19 +114,58 @@ class CheckoutContoroller extends Controller
         $transaction->transaction_status = 'PENDING';
         $transaction->save();
 
-        // untuk debug data transaction email
-        // return $transaction;
+        // Flow baru setelah connect ke midtrans
+        // Set Configuration midtrans
+        Config::$serverKey = config('midtrans.serverKey');
+        Config::$isProduction = config('midtrans.isProduction');
+        Config::$isSanitized = config('midtrans.isSanitized');
+        Config::$is3ds = config('midtrans.is3ds');
 
-        // Kirim E-Ticket ke email user
-        Mail::to($transaction->user)->send(
+        
+        // Array untuk di kirim ke midtrans
+        $midtrans_params = [
+            'transaction_details'    =>  [
+                'order_id'  =>  'TEST-MIDTRANS-' . $transaction->id,
+                'gross_amount'  =>  (int) $transaction->transaction_total
+            ],
+            'customer_details'  =>  [
+                'first_name' => $transaction->user->name,
+                'email' =>  $transaction->user->email,
+            ],
+            'enabled_payments'  =>  ['gopay', 'bank_transfer', 'indomaret'],
+            'vtweb' =>   []
+        ];
 
-            // call method (buil) in TransactionSuccess mail
-            // $transaction akan menjadi variable $data sebagai paramater di construct-nya TransactionSuccess
-            new TransactionSuccess($transaction)
-        );
+        try {
+
+            // ambil page payment midtrans
+            $paymentUrl = Snap::createTransaction($midtrans_params)->redirect_url;
+
+            // redirect ke halaman midtrans
+            header('Location: ' . $paymentUrl);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
 
 
-        return view('pages.success');
+
+
+
+
+        // Ini Flow Lama sebelum connect ke midtrans
+        // // untuk debug data transaction email
+        // // return $transaction;
+
+        // // Kirim E-Ticket ke email user
+        // Mail::to($transaction->user)->send(
+
+        //     // call method (buil) in TransactionSuccess mail
+        //     // $transaction akan menjadi variable $data sebagai paramater di construct-nya TransactionSuccess
+        //     new TransactionSuccess($transaction)
+        // );
+
+
+        // return view('pages.success');
     }
 }
 

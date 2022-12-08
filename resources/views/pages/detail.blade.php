@@ -82,9 +82,9 @@
                         <h2>Members are going</h2>
 
                         <div class="members my-2">
-                            <img src="frontend/images/profile/profile-circle-1.png" alt="" class="member-image mr-1">
-                            <img src="frontend/images/profile/profile-circle-2.png" alt="" class="member-image mr-1">
-                            <img src="frontend/images/profile/profile-circle-4.png" alt="" class="member-image mr-1">
+                            <img src="{{ url('frontend/images/profile/profile-circle-1.png') }}" alt="" class="member-image mr-1">
+                            <img src="{{ url('frontend/images/profile/profile-circle-2.png') }}" alt="" class="member-image mr-1">
+                            <img src="{{ url('frontend/images/profile/profile-circle-4.png') }}" alt="" class="member-image mr-1">
                         </div>
                         <hr>
                         <h2>Trip Informations</h2>

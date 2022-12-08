@@ -146,14 +146,13 @@
                                 <tr>
                                     <th width="50%">Sub Total</th>
                                     <td width="50%" class="text-right">
-                                        Rp {{ number_format($item->transaction_total, 0, '', '.')  }},00
+                                        Rp {{ number_format($item->transaction_total, 0, '', '.')  }}
                                     </td>
                                 </tr>
                                 <tr>
                                     <th width="50%">Total (+Unique)</th>
                                     <td width="50%" class="text-right text-total">
-                                        <span class="text-blue">Rp {{ $item->transaction_total }},</span>
-                                        <span class="text-orange">{{ mt_rand(0,99) }}</span>
+                                        <span class="text-blue">Rp {{ number_format($item->transaction_total, 0, '', '.') }}</span>
                                     </td>
 
                                     
@@ -162,42 +161,14 @@
                             <hr>
                             <h2>Payment Instructions</h2>
                             <p class="payment-instructions">
-                                Please complete your payment before to continue the wonderful trip
+                                You will be redirected to another page to pay
                             </p>
-
-                            <div class="bank">
-                                <div class="bank-item pb-3">
-                                    <img src="{{ url('frontend/icons/credit-card.png') }}" alt="" class="bank-image">
-                                    <div class="description">
-                                        <h3>PT. Nomads ID</h3>
-                                        <p>
-                                            0881 8829 8800
-                                            <br>
-                                            Bank Central Asia
-                                        </p>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-
-                                <div class="bank-item pb-3">
-                                    <img src="{{ url('frontend/icons/credit-card.png') }}" alt="" class="bank-image">
-                                    <div class="description">
-                                        <h3>PT. Nomads ID</h3>
-                                        <p>
-                                            0899 8501 7888
-                                            <br>
-                                            Bank HSBC
-                                        </p>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-
-                            </div>
+                            <img src="{{ url('frontend/images/transfer-bank.png') }}" alt="logo-transfer-bank" class="w-50">
                         </div>
 
                         <div class="join-container">
                             <a href="{{ route('checkout-success', $item->id) }}" class="btn btn-block btn-join-now mt-3 py-2">
-                                I Have Made Payment
+                                Process Payment
                             </a>
                         </div>
                         <div class="text-center mt-3">
