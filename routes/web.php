@@ -21,24 +21,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Versi Tutorial Laravel 6
-
-// Route::get('/', 'HomeController@index')->name('home');
-// Route::get('/detail', 'DetailController@index')->name('detail');
-// Route::get('/checkout', 'CheckoutController@index')->name('checkout');
-// Route::get('/checkout/success', 'CheckoutController@index')->name('checkout');
-
-// Route::prefix('admin')
-//     ->namespace('Admin')
-//     ->group(function() {
-//         Route::get('/', 'DashboardController@index')
-//             ->name('dashboard');
-//     });
-
-
-
-// Versi sendiri Laravel 8
-
 // kasih group middileware, buat route yang harus login dan terverifikasi emailnya
 Route::get('/', [HomeController::class, 'index'])->name('home');
 

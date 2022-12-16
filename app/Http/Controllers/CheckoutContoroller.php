@@ -132,9 +132,11 @@ class CheckoutContoroller extends Controller
                 'first_name' => $transaction->user->name,
                 'email' =>  $transaction->user->email,
             ],
-            'enabled_payments'  =>  ['gopay', 'bank_transfer', 'indomaret'],
+            'enabled_payments'  =>  ['bank_transfer', 'indomaret'],
             'vtweb' =>   []
         ];
+
+        // dd($midtrans_params);
 
         try {
 
